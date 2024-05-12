@@ -115,7 +115,7 @@ Now you can view logs in Explore
 
 Prerequisites:
 
-A great 'way to break Nginx' would be changing the usage file (after deleting the old version from kubectl) and doing 'kubectl apply -f usage.yaml'
+A great 'way to break Nginx to get Error 500' would be changing the usage file (after deleting the old version from kubectl) and doing 'kubectl apply -f usage.yaml'
 
 Add there this ConfigMap:
 ```
