@@ -1,9 +1,9 @@
 # **LOBERTA TEST TASK**
 # 
----
 Prerequisites: install [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/), [Kind](https://kind.sigs.k8s.io/docs/user/quick-start), [Docker](https://docs.docker.com/engine/install/ubuntu/), [Helm](https://helm.sh/docs/intro/install/)  and [python3](https://www.python.org/downloads/)
 
 **# Task 1**
+
 Kind is a lightweight solution for running kubernetes in Docker. To create cluster, copy this [file](https://github.com/urbeingwatched8/loberta_test_task/blob/main/kind_create_cluster.yaml) and use command
 ```
 kind create cluster --config=kind_create_cluster.yaml
@@ -14,7 +14,7 @@ terraform init
 terraform plan
 terraform apply
 ```
-Settings for the new Service, Deployment and ports are specified [here](https://github.com/urbeingwatched8/loberta_test_task/blob/main/app/usage.yaml)
+Settings for the new Service, Deployment and ports are specified [here](https://github.com/urbeingwatched8/loberta_test_task/blob/main/app/usage.yaml). 
 To apply, run
 ```
 kubectl apply -f usage.yaml
@@ -27,12 +27,13 @@ curl  -kL http://localhost/
 You should get 'My Test Site(base)' without errors.
 
 **# Task 2**
+
 To install ArgoCD, run
 ```
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
-To set up ArgoCD, create [ingress](https://github.com/urbeingwatched8/loberta_test_task/blob/main/argocd_ingress.yaml) and specify [configs](https://github.com/urbeingwatched8/loberta_test_task/blob/main/argocd.yaml)
+To set up ArgoCD, create [ingress](https://github.com/urbeingwatched8/loberta_test_task/blob/main/argocd_ingress.yaml) and specify [configs](https://github.com/urbeingwatched8/loberta_test_task/blob/main/argocd.yaml). 
 Command to run:
 ```
 kubectl apply -f argocd_ingress.yaml
@@ -58,6 +59,7 @@ python3 testing.py
 ```
 You should see that it returns 'Ran 2 tests in 0.014s' and 'OK'. 
 The request response text is a bit different from what we see on 'localhost', but that's completely fine
+
 **# Task 3**
 
 Run this to install Prometheus and Grafana:
@@ -75,13 +77,16 @@ And add this to /etc/hosts
 ```
 127.0.0.1 prom.local
 ```
-Now you can access Prometheus at localhost:9090
+Now you can access Prometheus at localhost:9090.
+
 To finish with setting up Grafana, enable port forwarding
 ```
 kubectl port-forward deployment/prometheus-grafana -n prometheus-grafana 3000
 ```
 Now you can access it at http://localhost:3000 with username admin and password admin.
+
 To create Prometheus Dashboard, add it as Data Source:
+
 Configuration>Data Sources>Add Data Source>Search For 'Prometheus'>Leave default 'prometheus' name>Add Url after getting external api from ifconfig 'http://External-Api:9090'
 
 After saving you the connection will be tested. In case of problems with Url, try 'http://prometheus/9090'
@@ -101,6 +106,7 @@ Enable port forwarding:
 kubectl -n loki port-forward svc/grafana 8080:80
 ```
 To add Loki as Data Source:
+
 Configuration>Data Sources>Add Data Source>Search For 'Prometheus'>Leave default 'loki' name>Add Url after getting external api from ifconfig 'http://loki:3100'
 ![image](https://github.com/urbeingwatched8/loberta_test_task/blob/main/pics/GrafanaLoki.png)
 Now you can view logs in Explore
@@ -123,14 +129,15 @@ data:
     worker_processes 1;
     worker_rlimit_nofile 1;
 ```
-And try to open many files using another ConfigMap
+And try to open many files using another ConfigMap.
 For a container, add
 ```
 volumeMounts:
       - name: config-volume
         mountPath: /etc/config
 ```
-And try to create MANY configmaps using different files (it's better if some not exist)
+And try to create MANY configmaps using different files (it's better if some not exist).
+
 Example:
 ```
 envFrom:
