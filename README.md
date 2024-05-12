@@ -58,4 +58,52 @@ python3 testing.py
 ```
 You should see that it returns 'Ran 2 tests in 0.014s' and 'OK'. 
 The request response text is a bit different from what we see on 'localhost', but that's completely fine
+**# Task 3**
+
+Run this to install Prometheus and Grafana:
+```
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus kube-prometheus-stack --create-namespace --namespace prom
+```
+Use this [file](https://github.com/urbeingwatched8/loberta_test_task/blob/main/prom.yaml) to create prometheus ingress
+
+```
+kubectl apply -f prom.yaml
+```
+And add this to /etc/hosts
+```
+127.0.0.1 prom.local
+```
+Now you can access Prometheus at localhost:9090
+To finish with setting up Grafana, enable port forwarding
+```
+kubectl port-forward deployment/prometheus-grafana -n prometheus-grafana 3000
+```
+Now you can access it at http://localhost:3000 with username admin and password admin.
+To create Prometheus Dashboard, add it as Data Source:
+Configuration>Data Sources>Add Data Source>Search For 'Prometheus'>Leave default 'prometheus' name>Add Url after getting external api from ifconfig 'http://External-Api:9090'
+
+After saving you the connection will be tested. In case of problems with Url, try 'http://prometheus/9090'
+![image](https://github.com/urbeingwatched8/loberta_test_task/blob/main/pics/GrafanaProm.png)
+To create a Dashboard, you can look for existing ones, choose the most suitable (I decided to use 15055) and then go to:
+Dashboards>New>Import Dashboard>Get it by number or Json file>Save
+![image](https://github.com/urbeingwatched8/loberta_test_task/blob/main/pics/GrafanaBoard.png)
+
+To install Loki, run
+```
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm upgrade - install loki - namespace=loki-stack grafana/loki-stack - create-namespace
+```
+Enable port forwarding:
+```
+kubectl -n loki port-forward svc/grafana 8080:80
+```
+To add Loki as Data Source:
+Configuration>Data Sources>Add Data Source>Search For 'Prometheus'>Leave default 'loki' name>Add Url after getting external api from ifconfig 'http://loki:3100'
+![image](https://github.com/urbeingwatched8/loberta_test_task/blob/main/pics/GrafanaLoki.png)
+Now you can view logs in Explore
+![image](https://github.com/urbeingwatched8/loberta_test_task/blob/main/pics/GrafanaLogs.png)
+
 
