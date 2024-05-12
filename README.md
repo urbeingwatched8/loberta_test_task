@@ -1,7 +1,7 @@
 # **LOBERTA TEST TASK**
 # 
 ---
-Prequisites: install [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/), [Kind](https://kind.sigs.k8s.io/docs/user/quick-start), [Docker](https://docs.docker.com/engine/install/ubuntu/), [Helm](https://helm.sh/docs/intro/install/)  and [python3](https://www.python.org/downloads/)
+Prerequisites: install [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/), [Kind](https://kind.sigs.k8s.io/docs/user/quick-start), [Docker](https://docs.docker.com/engine/install/ubuntu/), [Helm](https://helm.sh/docs/intro/install/)  and [python3](https://www.python.org/downloads/)
 
 **# Task 1**
 Kind is a lightweight solution for running kubernetes in Docker. To create cluster, copy this [file](https://github.com/urbeingwatched8/loberta_test_task/blob/main/kind_create_cluster.yaml) and use command
@@ -107,9 +107,9 @@ Now you can view logs in Explore
 ![image](https://github.com/urbeingwatched8/loberta_test_task/blob/main/pics/GrafanaLogs.png)
 **# Task 4**
 
-Prequisites:
+Prerequisites:
 
-A great 'way to break Nginx' would be changing the usage file (after deleting the old version from kubectl)
+A great 'way to break Nginx' would be changing the usage file (after deleting the old version from kubectl) and doing 'kubectl apply -f usage.yaml'
 
 Add there this ConfigMap:
 ```
