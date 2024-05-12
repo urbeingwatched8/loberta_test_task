@@ -24,7 +24,7 @@ To check the website, you can run
 ```
 curl  -kL http://localhost/
 ```
-You should get My Test Site(base) without errors.
+You should get 'My Test Site(base)' without errors.
 
 **# Task 2**
 To install ArgoCD, run
@@ -105,5 +105,44 @@ Configuration>Data Sources>Add Data Source>Search For 'Prometheus'>Leave default
 ![image](https://github.com/urbeingwatched8/loberta_test_task/blob/main/pics/GrafanaLoki.png)
 Now you can view logs in Explore
 ![image](https://github.com/urbeingwatched8/loberta_test_task/blob/main/pics/GrafanaLogs.png)
+**# Task 4**
+Prequisites:
+A great 'way to break Nginx' would be changing the usage file (after deleting the old version from kubectl)
+Add there this ConfigMap:
+```
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    worker_processes 1;
+    worker_rlimit_nofile 1;
+```
+And try to open many files using another ConfigMap
+For a container, add
+```
+volumeMounts:
+      - name: config-volume
+        mountPath: /etc/config
+```
+Or try to create MANY configmaps using different files (it's better if some not exist)
+Example:
+```
+envFrom:
+- configMapRef:
+    name: sample_config
+**The Incident**
 
-
+21:00 It was noticed that http://localhost has been down for 5 minutes. 
+21:01 Checked ArgoCD, Status is "Degraded" while "Synced".
+21:02 It means we can see the Revision History through Graphical User Interface at http://localhost:8080/
+21:03 Ran python test testing.py, we got 'FAILED (errors=2)', since status isn't 200 and the text is not 'My Test Site'
+21:04 At Revision History on ArgoCD, we should see when the latest version was deployed and who is it's author. It should ne active for 9 minutes by now.
+21:05 Looked at the code in the repository, noticed the new segments with 'ConfigMap'
+21:06 Copied the Revision Version of the app deployed BEFORE the erroneous version was deployed. 
+21:07 Old version of the file returned with 'argocd app rollback app1 - revision=123abc9877834956337651'. Can also be done by clicking on right upper corner dots>Rollback in GUI.
+21:09 The app is now Healthy and Synced
+21:10 Since we have 'prune: true', in the git repository the current version doesn't have faulty 'ConfigMaps' anymore. 
+21:15 Created a 'postmortem' event in calendar for tomorrow, sent the link to the author of the last commit which caused the error.
