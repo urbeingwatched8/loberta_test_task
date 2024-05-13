@@ -50,6 +50,10 @@ To get password for user Admin so you can login to http://localhost:8080/ or htt
 ```
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64
 ```
+Apply [configs](https://github.com/urbeingwatched8/loberta_test_task/blob/main/argocd.yaml) with link to repo:
+```
+kubectl apply -f argocd.yaml
+```
 You should see that the app is Healthy and is NOT out of sync
 
 We'll also run [simple tests](https://github.com/urbeingwatched8/loberta_test_task/blob/main/testing.py) written in Python. 
@@ -107,7 +111,7 @@ kubectl -n loki port-forward svc/grafana 8080:80
 ```
 To add Loki as Data Source:
 
-Configuration>Data Sources>Add Data Source>Search For 'Prometheus'>Leave default 'loki' name>Add Url after getting external api from ifconfig 'http://loki:3100'
+Configuration>Data Sources>Add Data Source>Search For 'Loki'>Leave default 'loki' name>Add Url after getting external api from ifconfig 'http://loki:3100'
 ![image](https://github.com/urbeingwatched8/loberta_test_task/blob/main/pics/GrafanaLoki.png)
 Now you can view logs in Explore
 ![image](https://github.com/urbeingwatched8/loberta_test_task/blob/main/pics/GrafanaLogs.png)
